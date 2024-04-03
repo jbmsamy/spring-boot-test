@@ -16,6 +16,11 @@ public class EmployeeRespositoryTests {
     @Autowired
     private EmployeeRepository employeeRepsoitory;
 
+    private Employee employee;
+    
+    private void setUp() {
+        employee = testEmployeeData();
+    }
     private Employee testEmployeeData() {
         Employee employee = Employee.builder()
                 .firstName("Ramesh")
@@ -129,7 +134,7 @@ public class EmployeeRespositoryTests {
         Optional<Employee> deletedEmployee = employeeRepsoitory.findById(employee.getId());
         Assertions.assertThat(deletedEmployee.isEmpty()).isTrue();
     }
-    @DisplayName("Junit test to find employee by JPQL")
+    @DisplayName("Junit test to find employee by JPQL using index parameter")
     @Test
     public void givenEmployeeeObect_whenFindByFirstNameAndLastName_thenReturnMatchingEmployeeObject() {
         // given
@@ -144,6 +149,55 @@ public class EmployeeRespositoryTests {
         searchedEmployee = employeeRepsoitory.findEmployeeByJPQL("Ramesh2","Fadatre" );
         //then
         Assertions.assertThat(searchedEmployee).isEmpty();
+    }
+
+    @DisplayName("Junit test to find employee by JPQL using named parameter")
+    @Test
+    public void givenEmployeeeObect_whenFindByFirstNameAndLastNameUsingNamedParam_thenReturnMatchingEmployeeObject() {
+        // given
+        Employee employee = testEmployeeData();
+        employeeRepsoitory.save(employee);
+        //when
+        Optional<Employee> searchedEmployee = employeeRepsoitory.findEmployeeByJPQL("Ramesh","Fadatre" );
+        //then
+        Assertions.assertThat(searchedEmployee).isPresent();
+        Assertions.assertThat(searchedEmployee.get()).isNotNull();
+
+        searchedEmployee = employeeRepsoitory.findEmployeeByJPQLNamedparam("Ramesh2","Fadatre" );
+        //then
+        Assertions.assertThat(searchedEmployee).isEmpty();
+    }
+    @DisplayName("Junit test to find employee by JPQL using Native Query")
+    @Test
+    public void givenEmployeeeObect_whenFindByFirstNameAndLastNameUsingNNativeQuery_thenReturnMatchingEmployeeObject() {
+        // given
+        Employee employee = testEmployeeData();
+        employeeRepsoitory.save(employee);
+        //when
+        Employee searchedEmployee = employeeRepsoitory.findEmployeeByFirstNameAndLastNameWithNativeQuery("Ramesh","Fadatre" );
+        //then
+        Assertions.assertThat(searchedEmployee).isNotNull();
+
+        searchedEmployee = employeeRepsoitory.findEmployeeByFirstNameAndLastNameWithNativeQuery ("Ramesh2","Fadatre" );
+        //then
+        Assertions.assertThat(searchedEmployee).isNull();
+    }
+
+    @DisplayName("Junit test to find employee by JPQL using Native Query using named parameters")
+    @Test
+    public void givenEmployeeeObect_whenFindByFirstNameAndLastNameUsingNativeQueryNamed_thenReturnMatchingEmployeeObject() {
+        // given
+        Employee employee = testEmployeeData();
+        employeeRepsoitory.save(employee);
+        //when
+        Employee searchedEmployee = employeeRepsoitory.findEmployeeByFirstNameAndLastNameWithNativeQueryNamedParam("Ramesh","Fadatre" );
+        //then
+        Assertions.assertThat(searchedEmployee).isNotNull();
+
+
+        searchedEmployee = employeeRepsoitory.findEmployeeByFirstNameAndLastNameWithNativeQueryNamedParam("Ramesh2","Fadatre" );
+        //then
+        Assertions.assertThat(searchedEmployee).isNull();
     }
 }
 
