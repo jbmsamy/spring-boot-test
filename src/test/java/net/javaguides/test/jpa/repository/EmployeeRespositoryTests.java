@@ -2,6 +2,7 @@ package net.javaguides.test.jpa.repository;
 
 import net.javaguides.test.jpa.model.Employee;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,8 @@ public class EmployeeRespositoryTests {
     private EmployeeRepository employeeRepsoitory;
 
     private Employee employee;
-    
-    private void setUp() {
+    @BeforeEach
+    public void setUp() {
         employee = testEmployeeData();
     }
     private Employee testEmployeeData() {
@@ -34,12 +35,12 @@ public class EmployeeRespositoryTests {
     @Test
     public void givenEmployeeObject_whenSave_thenReturnEmployeeObject()  {
         //given
-        Employee employee = Employee.builder()
+        /*Employee employee = Employee.builder()
                 .firstName("Ramesh")
                 .lastName("Fadatre")
                 .email("ramesh@gmail.com")
                 .build();
-        //when
+        *///when
         Employee savedEmployee = employeeRepsoitory.save(employee);
 
         //then
@@ -50,18 +51,18 @@ public class EmployeeRespositoryTests {
     @Test
     public void givenEmployeeList_whenFindAll_thenEmployeeList() {
         //begin
-        Employee employee1 = Employee.builder()
+        /*Employee employee1 = Employee.builder()
                 .firstName("Ramesh1")
                 .lastName("Fadatre1")
                 .email("ramesh1@gmail.com")
-                .build();
+                .build();*/
         Employee employee2 = Employee.builder()
                 .firstName("Ramesh2")
                 .lastName("Fadatre2")
                 .email("ramesh2@gmail.com")
                 .build();
         //when
-        employeeRepsoitory.save(employee1);
+        employeeRepsoitory.save(employee);
         employeeRepsoitory.save(employee2);
         List<Employee> employeeList = employeeRepsoitory.findAll();
         //then
@@ -73,11 +74,11 @@ public class EmployeeRespositoryTests {
     @Test
     public void givenEmployeeeObject_whenFindById_thenReturnEmployeeObject() {
         // given
-        Employee employee = Employee.builder()
+        /*Employee employee = Employee.builder()
                 .firstName("Ramesh")
                 .lastName("Fadatre")
                 .email("ramesh@gmail.com")
-                .build();
+                .build();*/
         employeeRepsoitory.save(employee);
         //when
         Employee employeeDB = employeeRepsoitory.findById(employee.getId()).get();
@@ -89,7 +90,7 @@ public class EmployeeRespositoryTests {
     @Test
     public void givenEmployeeObject_whenFindByEmail_thenReturnEmployeeObject() {
         // given
-        Employee employee = testEmployeeData();
+        //Employee employee = testEmployeeData();
         employeeRepsoitory.save(employee);
         //when
         Employee employeeDB = employeeRepsoitory.findByEmail("ramesh@gmail.com").get();
@@ -103,7 +104,7 @@ public class EmployeeRespositoryTests {
     @Test
     public void givenEmpoyeeObject_whenUpdate_thenReturnUpdatedEmployeeObject() {
         // given
-        Employee employee = testEmployeeData();
+        //Employee employee = testEmployeeData();
         employeeRepsoitory.save(employee);
         //when
         Optional<Employee> savedEmployee = employeeRepsoitory.findByEmail("ramesh@gmil.com");
@@ -127,7 +128,7 @@ public class EmployeeRespositoryTests {
     @Test
     public void givenEmployeeObject_whenDelete_thenDoNotReturnEmployeeeObject() {
         // given
-        Employee employee = employeeRepsoitory.save(testEmployeeData());
+        //Employee employee = employeeRepsoitory.save(testEmployeeData());
         //when
         employeeRepsoitory.deleteById(employee.getId());
         //then
@@ -138,7 +139,7 @@ public class EmployeeRespositoryTests {
     @Test
     public void givenEmployeeeObect_whenFindByFirstNameAndLastName_thenReturnMatchingEmployeeObject() {
         // given
-        Employee employee = testEmployeeData();
+        //Employee employee = testEmployeeData();
         employeeRepsoitory.save(employee);
         //when
         Optional<Employee> searchedEmployee = employeeRepsoitory.findEmployeeByJPQL("Ramesh","Fadatre" );
@@ -155,7 +156,7 @@ public class EmployeeRespositoryTests {
     @Test
     public void givenEmployeeeObect_whenFindByFirstNameAndLastNameUsingNamedParam_thenReturnMatchingEmployeeObject() {
         // given
-        Employee employee = testEmployeeData();
+        //Employee employee = testEmployeeData();
         employeeRepsoitory.save(employee);
         //when
         Optional<Employee> searchedEmployee = employeeRepsoitory.findEmployeeByJPQL("Ramesh","Fadatre" );
@@ -171,7 +172,7 @@ public class EmployeeRespositoryTests {
     @Test
     public void givenEmployeeeObect_whenFindByFirstNameAndLastNameUsingNNativeQuery_thenReturnMatchingEmployeeObject() {
         // given
-        Employee employee = testEmployeeData();
+        //Employee employee = testEmployeeData();
         employeeRepsoitory.save(employee);
         //when
         Employee searchedEmployee = employeeRepsoitory.findEmployeeByFirstNameAndLastNameWithNativeQuery("Ramesh","Fadatre" );
@@ -187,7 +188,7 @@ public class EmployeeRespositoryTests {
     @Test
     public void givenEmployeeeObect_whenFindByFirstNameAndLastNameUsingNativeQueryNamed_thenReturnMatchingEmployeeObject() {
         // given
-        Employee employee = testEmployeeData();
+        //Employee employee = testEmployeeData();
         employeeRepsoitory.save(employee);
         //when
         Employee searchedEmployee = employeeRepsoitory.findEmployeeByFirstNameAndLastNameWithNativeQueryNamedParam("Ramesh","Fadatre" );
